@@ -11,6 +11,12 @@ const usersVideos = async () => {
   const data = await res.json();
   videos(data.videos);
 };
+const category_video = (id) => {
+  console.log(id);
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+  .then((res)=> res.json())
+  .then((data)=> videos(data.category))
+}
 // API Get section end ..................................
 
 // extarnal function
@@ -19,7 +25,7 @@ const time = (time) =>{
   const newSecond = parseInt(time % 3600)
   const minute = parseInt(newSecond / 60);
   const perSecund = newSecond % 60 ; 
-  return `${newTime}hr${minute}mi${perSecund}sec `
+  return `${newTime}hr ${minute}mi ${perSecund}sec `
 }
 // category_id: "1001",
 //   video_id: "aaad",
@@ -44,7 +50,7 @@ const videos = (video) => {
        <div class="card card-compact bg-base-100 shadow-xl">
             <figure class = "h-[200px] relative">
                <img class="h-full w-full object-cover" src=${vid.thumbnail}/>
-               <h1 class=" absolute bg-gray-800 text-white rounded-3xl px-2 right-2 bottom-2" >${time(vid.others.posted_date)}</h1>
+               ${vid.others.posted_date == 0? "": `<h1 class=" absolute bg-gray-800 text-white rounded-3xl px-2 right-2 bottom-2" >${time(vid.others.posted_date)}</h1>`}
             </figure>
          <div class="card flex flex-row p-3">
               <div class="">
@@ -70,7 +76,7 @@ const displayCategories = (categories) => {
   categories.forEach((items) => {
     const button = document.createElement("button");
     button.innerHTML = `
-        <button class="btn" >${items.category}</button>
+        <button onclick="category_video(${items.category_id})" class="btn" >${items.category}</button>
         `;
 
     buttonSection.appendChild(button);
