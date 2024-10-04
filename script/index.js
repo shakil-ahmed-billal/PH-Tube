@@ -1,4 +1,5 @@
-// extarnal function
+// external function
+// videos time converter function create..
 const time = (time) =>{
   const newTime = parseInt(time / 3600) ;
   const newSecond = parseInt(time % 3600)
@@ -6,6 +7,8 @@ const time = (time) =>{
   const perSecund = newSecond % 60 ; 
   return `${newTime}hr ${minute}mi ${perSecund}sec `
 }
+
+// active button bg color change function...
 function activeBtns(){
   const button = document.getElementsByClassName('cat-button')
   for(const btn of button){
@@ -13,20 +16,34 @@ function activeBtns(){
     btn.classList.remove('active')
   }
 }
-// extarnal function
+
+// search input section are function create...
+document.getElementById('search-input').addEventListener("keyup", (e)=>{
+
+  usersVideos(e.target.value)
+})
+// external function..
+
+
+
 // API Get section start ..................................
+// category button create section
 const categories = async () => {
   const url = "https://openapi.programming-hero.com/api/phero-tube/categories";
   const res = await fetch(url);
   const data = await res.json();
   displayCategories(data.categories);
 };
-const usersVideos = async () => {
-  const url = "https://openapi.programming-hero.com/api/phero-tube/videos";
+
+// user videos information 
+const usersVideos = async (search) => {
+  const url = `https://openapi.programming-hero.com/api/phero-tube/videos?title=${search}`;
   const res = await fetch(url);
   const data = await res.json();
   videos(data.videos);
 };
+
+// category ways videos lod systems
 const category_video = (id) => {
   console.log(id);
   fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
@@ -35,6 +52,7 @@ const category_video = (id) => {
 
     // all button are class remove function
     activeBtns()
+
     // only get id add class function
     const activeBtn = document.getElementById(`btn-${id}`) 
     activeBtn.classList.add('active')
@@ -44,6 +62,7 @@ const category_video = (id) => {
   })
 }
 
+// user videos information... 
 const showDetails = async(id) => {
   const url = `https://openapi.programming-hero.com/api/phero-tube/video/${id}`
   const res = await fetch(url)
@@ -51,8 +70,14 @@ const showDetails = async(id) => {
   showVideosDetails(data.video)
   
 }
+// API Get section end ..................................
+
+
+
+
+// display videos section....
 const showVideosDetails = (videos) =>{
-  console.log(videos);
+
   const modal = document.getElementById('customModal')
   modal.innerHTML =`
   <div id="modal-box" class="modal-box">
@@ -68,28 +93,8 @@ const showVideosDetails = (videos) =>{
   modal.showModal()
 
 }
-// API Get section end ..................................
-
-
-
-
-// category_id: "1001",
-//   video_id: "aaad",
-//   thumbnail: "https://i.ibb.co/f9FBQwz/smells.jpg",
-//   title: "Smells Like Teen Spirit",
-//   authors: [
-//     {
-//       profile_picture: "https://i.ibb.co/k4tkc42/oliviar-harris.jpg",
-//       profile_name: "Oliver Harris",
-//       verified: true,
-//     },
-//   ],
-//   others: {
-//     views: "5.4K",
-//     posted_date: "1672656000",
-//   },
-// display videos section....
 const videos = (video) => {
+
   const videoCard = inputEl("videosSection");
   videoCard.innerHTML = "";
   if(video.length == 0){
@@ -97,7 +102,6 @@ const videos = (video) => {
     <h1>No more conteint</h1>`
   }
   else{
-
     // videos element card section
     video.forEach((vid) => {
       const div = document.createElement('div');
@@ -123,16 +127,14 @@ const videos = (video) => {
                 </div>
            </div>
          </div>`
-          ;
-  
+          ;  
       videoCard.appendChild(div);
     });
   }
-
-
 };
 // category button section
 const displayCategories = (categories) => {
+
   const buttonSection = inputEl("categories");
   categories.forEach((items) => {
     const button = document.createElement("button");
@@ -143,5 +145,8 @@ const displayCategories = (categories) => {
     buttonSection.appendChild(button);
   });
 };
+
+
+
 usersVideos();
 categories();
